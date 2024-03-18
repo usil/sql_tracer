@@ -107,7 +107,7 @@ go build -o build/sql_tracer src/main/go/sql_tracer.go
 **Windows**
 
 ```
-go build -o build/sql_tracer.exe src/main/go/sql_tracer.go
+env GOOS=windows GOARCH=amd64 go build -o build/sql_tracer.exe src/main/go/sql_tracer.go
 ```
 
 If no errors, you will find the executable in the build folder. Then you could use it in a machine without **go**
