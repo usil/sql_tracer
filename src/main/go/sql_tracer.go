@@ -51,17 +51,20 @@ func main() {
         if errCon != nil {
             fmt.Println(errCon)
             saveReport(localIp, *alias, start, time.Now(), "failed", "error code 6660: "+strings.ReplaceAll(errCon.Error(), ",", ";"), *reportLocation)
+            conn.Close()
             continue
         }
         errCon = conn.Ping()
         if errCon != nil {
             fmt.Println(errCon)
             saveReport(localIp, *alias, start, time.Now(), "failed", "error code 6661: "+strings.ReplaceAll(errCon.Error(), ",", ";"), *reportLocation)
+            conn.Close()
             continue
         }
         fmt.Println("\nconnection status: success")
         rows, errQuery := conn.Query("SELECT 1 from dual")
-        defer rows.Close()
+        rows.Close()
+        conn.Close()
         if errQuery != nil {
             fmt.Println(errQuery)
             saveReport(localIp, *alias, start, time.Now(), "failed", "error code 6662: "+strings.ReplaceAll(errQuery.Error(), ",", ";"), *reportLocation)
@@ -114,6 +117,7 @@ func saveReport(ip string, alias string, start time.Time, end time.Time, status 
     }
 }
 
+//#TODO
 // func getLocalIp(){
     // conn, err := net.Dial("udp", "8.8.8.8:80")
     // if err == nil {
